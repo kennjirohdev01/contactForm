@@ -4,11 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>お問い合わせフォーム</title>
-    </head>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
 <body>
     <h1>お問い合わせ</h1>
 
     <form action="/submit" method="POST">
+        <div>
+            <label for="Prefecture">都道府県:</label>
+            <input type="text" id="Prefecture" name="user_prefecture">
+        </div>
+        <div>
+            <label for="City">市区町村:</label>
+            <input type="text" id="City" name="user_city">
+        </div>
         <div>
             <label for="name">お名前:</label>
             <input type="text" id="name" name="user_name">

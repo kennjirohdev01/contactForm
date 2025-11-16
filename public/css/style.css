@@ -1,0 +1,20 @@
+body{
+    background-color: cadetblue;
+}
+
+body h1{
+    color: white;
+    text-align: center;
+}
+
+body label{
+    font-size: 20px;
+}
+
+div button{
+    font-size: 18px;
+    float : right;
+}
+body label{
+    margin-right: 10px;
+}

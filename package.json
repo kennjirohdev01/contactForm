@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/kennjirohdev01/contactForm#readme",
   "dependencies": {
+    "ejs": "^3.1.10",
     "express": "^5.1.0"
   }
 }

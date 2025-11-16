@@ -6,6 +6,9 @@ const path = require('path'); // Node.js に標準で入っている 'path' モ�
 const app = express();
 const PORT = 3000; // サーバーを起動するポート番号 (3000 が一般的)
 
+ // EJS をテンプレートエンジンとして設定
+app.set('view engine', 'ejs'); 
+
 // 3. (重要) 'public' フォルダを静的ファイルとして提供
 // これにより、public/index.html や public/css/style.css にブラウザからアクセスできるようになる
 app.use(express.static(path.join(__dirname, 'public')));
