@@ -1,5 +1,6 @@
 body{
     background-color: cadetblue;
+    font-family: sans-serif;
 }
 
 body h1{
@@ -7,14 +8,53 @@ body h1{
     text-align: center;
 }
 
+form{
+
+    max-width: 600px;
+    margin : 0 auto;
+    padding : 20px;
+
+    background-color:white;
+    border-radius: 8px;
+}
+
+form div{
+    margin-bottom: 15px;
+}
+
 body label{
     font-size: 20px;
+
+    display: block;
+    margin-bottom: 5px;
+}
+
+form input[type="text"],
+form input[type="email"],
+form textarea{
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+#message{
+    height: 100px;
+    resize: vertical;
 }
 
 div button{
     font-size: 18px;
-    float : right;
+
+    width:100%;
+
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
-body label{
-    margin-right: 10px;
+
+div button:hover{
+    background-color: #0056b3;
 }

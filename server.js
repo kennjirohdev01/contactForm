@@ -18,6 +18,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // JSON 形式のデータも受け取れるようにする
 
+// mysql2のインポートと設定 promiseAPIを使用
+const mysql=require('mysql2/promise');
+const pool = mysql.createPool({
+    host: 'localhost',
+    user: 'contact_app_user',
+    password: '@123456789MMkk',
+    database: 'contact_form_db',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+});
+
+module.exports = pool;
+
 // 5. フォーム送信 (POST) を受け取るルート
 app.post('/submit', (req, res) => {
     console.log('フォームデータを受け取りました:');
