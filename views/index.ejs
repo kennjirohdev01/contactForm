@@ -12,7 +12,13 @@
     <form action="/submit" method="POST">
         <div>
             <label for="Prefecture">都道府県:</label>
-            <input type="text" id="Prefecture" name="user_prefecture">
+            <select id="Prefecture" name="user_prefecture">
+                <option value="" selected>---</option>
+
+                <% prefectures.forEach((prefecture) => { %>
+                    <option value="<%= prefecture %>"><%= prefecture %></option>
+                <% }); %>
+            </select>
         </div>
         <div>
             <label for="City">市区町村:</label>
