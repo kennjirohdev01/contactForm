@@ -3,10 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>管理者画面</title>
+    <link rel="stylesheet" href="./css/adminstyle.css">
 </head>
 <body>
-    <h1>管理者画面です</h1>
-
+    <h1>管理者画面 問い合わせ内容一覧</h1>
+    <p>
     <a href="/">フォームへ戻る</a>
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>番号</th>
+                <th>都道府県</th>
+                <th>市区町村</th>
+                <th>番地など</th>
+                <th>生年月日</th>
+                <th>お名前</th>
+                <th>メールアドレス</th>
+                <th>送信時刻</th>
+                <th>お問い合わせ内容</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% submissions.forEach((submission) => { %>
+                <tr>
+                    <td><%= submission.id %></td>
+                    <td><%= submission.prefecture %></td>
+                    <td><%= submission.city %></td>
+                    <td><%= submission.address_line1 %></td>
+                    <td><%= formatDate(submission.birthday) %></td>
+                    <td><%= submission.name %></td>
+                    <td><%= submission.email_address %></td>
+                    <td><%= formatDate(submission.created_at,true) %></td>
+                    <td><%= submission.message %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
 </body>
 </html>
