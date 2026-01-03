@@ -88,3 +88,88 @@ form div:has(textarea){
 .admin-link button:hover {
     background-color: #5a6268;
 }
+
+/* プルダウンを横並びにするための簡単なCSS */
+.date-select-wrapper {
+    display: flex;
+    gap: 10px; /* プルダウン間の隙間 */
+    align-items: center;
+}
+.date-select-wrapper select {
+    padding: 5px;
+    font-size: 16px;
+}
+
+/* =========================================
+   住所検索フォーム用の追加スタイル
+   ========================================= */
+
+/* 住所エリア全体を少し区切って見やすくする */
+.address-form-container {
+    background-color: #f2f2f2; /* 薄いグレーの背景 */
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;       /* 下の要素との隙間 */
+    
+    /* 既存の 'form div' の設定（横並び）を打ち消して、縦積みにする */
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    align-items: stretch; /* 横幅いっぱいに広げる */
+}
+
+/* 住所エリア内の各行設定 */
+/* ⚠️重要: 既存の 'form div' セレクタよりも優先度を高くして上書きします */
+.address-form-container .form-group {
+    display: flex;
+    flex-direction: column; /* ここだけ「ラベルを上、入力欄を下」にする */
+    align-items: flex-start; /* 左寄せ */
+    margin-bottom: 15px;
+}
+
+/* 住所エリア内のラベル設定 */
+.address-form-container label {
+    width: auto;      /* 既存の 'width: 200px' をリセット */
+    font-size: 14px;  /* 少し小さめにして情報の階層をつける */
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* 住所エリア内の入力欄 */
+.address-form-container input[type="text"] {
+    width: 100%; /* 横幅いっぱいにする */
+}
+
+/* 郵便番号とボタンのラッパー */
+/* ここだけは横並び（Row）に戻します */
+.zipcode-wrapper {
+    display: flex;
+    flex-direction: row; 
+    gap: 10px;
+    width: 100%;
+}
+
+/* 郵便番号入力欄の幅調整 */
+.zipcode-wrapper input[type="text"] {
+    flex: none;   /* 自動伸縮させない */
+    width: 150px; /* 固定幅 */
+}
+
+/* 住所検索ボタン */
+#searchBtn {
+    width: auto;      /* 親の幅いっぱいにしない */
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #28a745; /* 緑色にして「送信」ボタンと区別 */
+}
+#searchBtn:hover {
+    background-color: #218838;
+}
+
+/* エラーメッセージ */
+.error-text {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+    display: block; /* 改行させる */
+}
