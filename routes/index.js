@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const prefectures = require('../data/prefectures');
 const pool = require('../db/pool');
 
 router.get('/', (req, res) => {
-    res.render('index', { prefectures });
+    res.render('index');
 });
 
 router.post('/submit', async (req, res) => {

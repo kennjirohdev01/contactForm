@@ -1,30 +1,49 @@
-// 1. express をインポート
 const express = require('express');
 const path = require('path');
+const session = require('express-session');
+const checkAuth = require('./auth');        // 認証チェック用ミドルウェア
+require('dotenv').config();
+
+// ▼▼▼ 追加: 作成したルーターを読み込む ▼▼▼
+const authRouter = require('./routes/auth'); 
+
 const app = express();
 const PORT = 3000;
 
-// EJS をテンプレートエンジンとして設定
 app.set('view engine', 'ejs'); 
 app.set('views', path.join(__dirname, 'views'));
 
-//  'public' フォルダを静的ファイルとして提供
-// これにより、public/index.html や public/css/style.css にブラウザからアクセスできるようになる
 app.use(express.static(path.join(__dirname, 'public')));
-
-// (重要) フォームからの POST リクエストを受け取るための設定
-// これがないと、フォームのデータ (req.body) を読み取れない
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json()); // JSON 形式のデータも受け取れるようにする
+app.use(express.json());
 
-// ルーターを登録
+// セッションの設定
+app.use(session({
+    secret: 'secret_key_12345',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 60 * 60 * 1000 }
+}));
+
+// ▼▼▼ 修正エリア: ログイン・ログアウトの直書きコードを削除し、ルーターを使用 ▼▼▼
+// 以前ここにあった app.get('/login'...) 等はすべて routes/auth.js に移動しました。
+// ここで '/' にマウントすることで、
+// routes/auth.js 内の '/login' は 'http://host/login' としてアクセス可能になります。
+app.use('/', authRouter); 
+
+
+// ルーターを登録 (既存)
 const indexRouter = require('./routes/index');
 const adminRouter = require('./routes/admin');
 
 app.use('/', indexRouter);
-app.use('/admin', adminRouter);
 
-// 6. サーバーを起動
+// 管理画面の保護 (既存のまま)
+// /admin にアクセスするときだけ checkAuth が発動し、
+// OKなら adminRouter (管理画面の中身) へ進む
+app.use('/admin', checkAuth, adminRouter);
+
+
 app.listen(PORT, () => {
     console.log(`サーバーが http://localhost:${PORT} で起動しました`);
 });

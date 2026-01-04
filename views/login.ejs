@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理者ログイン</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+
+    <form action="/login" method="POST">
+        <h1>管理者ログイン</h1>
+
+        <% if (error) { %>
+            <div class="error-msg">
+                <%= error %>
+            </div>
+        <% } %>
+
+        <div>
+            <label for="password">パスワード:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <button type="submit">ログイン</button>
+        </div>
+        
+        <p style="text-align: center; margin-top: 15px;">
+            <a href="/">お問い合わせフォームへ戻る</a>
+        </p>
+    </form>
+
+</body>
+</html>
