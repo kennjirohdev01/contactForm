@@ -16,7 +16,7 @@
     <main>
         <h1>お問い合わせ</h1>
 
-        <form action="/submit" method="POST">
+        <form action="/submit" method="POST" id="contactForm">
             <div>
                 <label for="name">お名前:</label>
                 <input type="text" id="name" name="user_name">
@@ -64,7 +64,10 @@
             </div>
             <div>
                 <label for="message">お問い合わせ内容:</label>
-                <textarea id="message" name="user_message"></textarea>
+                <div class="input-group-vertical">
+                    <textarea id="message" name="user_message"></textarea>
+                    <span id="messageError" class="error-text"></span>
+                </div>
             </div>
             <div>
                 <button type="submit">送信</button>
@@ -79,5 +82,6 @@
     </footer>
     <script src="./js/dateSelect.js"></script>
     <script src="./js/addressSearch.js"></script>
+    <script src="./js/formVaridation.js"></script>
 </body>
 </html>

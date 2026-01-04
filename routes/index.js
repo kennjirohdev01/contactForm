@@ -18,6 +18,12 @@ router.post('/submit', async (req, res) => {
     } = req.body;
 
     const birthdayForDb = user_birthday === '' ? null : user_birthday;
+    
+    // 入力内容のチェック
+    if(!user_message || user_message.trim() === ""){
+        return res.redirect('/');
+    }
+    
 
     try {
         const sql = `

@@ -173,3 +173,16 @@ form div:has(textarea){
     margin-top: 5px;
     display: block; /* 改行させる */
 }
+
+/* ...既存のCSSの下に追加... */
+
+/* 入力欄とエラーメッセージを縦積みにするラッパー */
+.input-group-vertical {
+    flex: 1;                /* 親のFlex内で余った幅を全て使う */
+    display: flex;          /* この中もFlexboxにする */
+    flex-direction: column; /* ただし、この中は「縦並び」にする */
+    width: 100%;            /* 幅を確保 */
+}
+.input-group-vertical textarea {
+    width: 100%;
+}
