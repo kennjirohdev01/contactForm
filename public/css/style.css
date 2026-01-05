@@ -174,8 +174,6 @@ form div:has(textarea){
     display: block; /* 改行させる */
 }
 
-/* ...既存のCSSの下に追加... */
-
 /* 入力欄とエラーメッセージを縦積みにするラッパー */
 .input-group-vertical {
     flex: 1;                /* 親のFlex内で余った幅を全て使う */
@@ -185,4 +183,17 @@ form div:has(textarea){
 }
 .input-group-vertical textarea {
     width: 100%;
+}
+
+/* 無効化されたボタンのスタイル */
+button:disabled {
+    background-color: #cccccc; /* グレーにする */
+    color: #666666;            /* 文字も薄く */
+    cursor: not-allowed;       /* マウスカーソルを「駐車禁止」マークに */
+    opacity: 0.7;              /* 全体を少し透明に */
+}
+
+/* 無効化時はホバーしても色を変えない（重要） */
+button:disabled:hover {
+    background-color: #cccccc; /* 通常時と同じ色 */
 }
