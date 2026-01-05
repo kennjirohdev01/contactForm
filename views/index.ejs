@@ -13,6 +13,12 @@
 
     </header>
     
+    <% if (typeof successMessage !== 'undefined' && successMessage) { %>
+        <div id="toast" class="toast">
+            <%= successMessage %>
+        </div>
+    <% } %>
+
     <main>
         <h1>お問い合わせ</h1>
 

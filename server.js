@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
+const flash = require('connect-flash');
 const checkAuth = require('./auth');        // 認証チェック用ミドルウェア
 require('dotenv').config();
 
@@ -24,6 +25,8 @@ app.use(session({
     saveUninitialized: false,
     cookie: { maxAge: 60 * 60 * 1000 }
 }));
+
+app.use(flash());
 
 // ▼▼▼ 修正エリア: ログイン・ログアウトの直書きコードを削除し、ルーターを使用 ▼▼▼
 // 以前ここにあった app.get('/login'...) 等はすべて routes/auth.js に移動しました。

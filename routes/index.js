@@ -3,7 +3,12 @@ const router = express.Router();
 const pool = require('../db/pool');
 
 router.get('/', (req, res) => {
-    res.render('index');
+
+    const successMessages = req.flash('success');
+
+    res.render('index',{
+        successMessage:successMessages[0]
+    });
 });
 
 router.post('/submit', async (req, res) => {
@@ -40,7 +45,13 @@ router.post('/submit', async (req, res) => {
             user_email,
             user_message
         ]);
-        res.send('お問い合わせありがとうございました！');
+        
+        // 成功メッセージをセット
+        req.flash('success','お問い合わせを受け付けました！');
+
+        // トップページへリダイレクト
+        res.redirect('/');
+
     } catch (error) {
         console.error(error);
         res.status(500).send('サーバーエラーが発生しました。');

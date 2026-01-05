@@ -197,3 +197,27 @@ button:disabled {
 button:disabled:hover {
     background-color: #cccccc; /* 通常時と同じ色 */
 }
+
+/* トースト通知のスタイル */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #28a745; /* 成功時の緑色 */
+    color: white;
+    padding: 15px 25px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    font-weight: bold;
+    z-index: 1000; /* 最前面に表示 */
+
+    /* ふわっと消えるアニメーション (合計4秒) */
+    /* fadeOutというアニメーションを、3秒待ってから1秒かけて実行 */
+    animation: fadeOut 1s ease 3s forwards;
+}
+
+/* アニメーション定義 */
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; visibility: hidden; }
+}
