@@ -38,6 +38,8 @@ searchBtn.addEventListener('click', async () => {
         // レスポンスをJSONとして解析
         // これも非同期処理なので await します
         const data = await response.json();
+        
+        console.log(data);
 
         // --- 結果の判定 ---
         // data.results は、見つかれば配列、見つからなければ null が返ってきます

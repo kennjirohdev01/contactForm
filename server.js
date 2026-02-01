@@ -5,8 +5,9 @@ const flash = require('connect-flash');
 const checkAuth = require('./auth');        // 認証チェック用ミドルウェア
 require('dotenv').config();
 
-// ▼▼▼ 追加: 作成したルーターを読み込む ▼▼▼
+// 作成したルーターを読み込む ▼▼▼
 const authRouter = require('./routes/auth'); 
+const apiRouter = require('./routes/api');
 
 const app = express();
 const PORT = 3000;
@@ -28,12 +29,10 @@ app.use(session({
 
 app.use(flash());
 
-// ▼▼▼ 修正エリア: ログイン・ログアウトの直書きコードを削除し、ルーターを使用 ▼▼▼
-// 以前ここにあった app.get('/login'...) 等はすべて routes/auth.js に移動しました。
 // ここで '/' にマウントすることで、
 // routes/auth.js 内の '/login' は 'http://host/login' としてアクセス可能になります。
 app.use('/', authRouter); 
-
+app.use('/api',apiRouter); // /apiから始まるURLはapi.jsに任せる
 
 // ルーターを登録 (既存)
 const indexRouter = require('./routes/index');

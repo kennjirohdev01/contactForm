@@ -8,14 +8,15 @@
 </head>
 <body>
 
-    <form action="/login" method="POST">
+    <form id="loginForm">
         <h1>管理者ログイン</h1>
 
-        <% if (error) { %>
-            <div class="error-msg">
-                <%= error %>
-            </div>
-        <% } %>
+        <div id="errorMsg" class="error-msg" style="display: none;"></div>
+
+        <div>
+            <label for="email">メールアドレス</label>
+            <input type="email" id="email" name="email" required placeholder="admin@example.com">
+        </div>
 
         <div>
             <label for="password">パスワード:</label>
@@ -30,6 +31,49 @@
             <a href="/">お問い合わせフォームへ戻る</a>
         </p>
     </form>
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const errorMsg = document.getElementById('errorMsg');
 
+        loginForm.addEventListener('submit',async(e)=>{
+            // フォームの標準動作(ページリロード)をキャンセル
+            // 裏でJSが動くので、submitが押されてもブラウザのリロードが動かないようにする
+            e.preventDefault();
+
+            // 入力値を取得
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // エラー表示をリセット
+            errorMsg.style.display = 'none';
+            errorMsg.textContent = '';
+
+            try{
+                // APIに送信
+                const response = await fetch('/api/login',{
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({email,password})
+                });
+
+                const result = await response.json();
+
+                if(result.success){
+                    // 成功したら管理者画面へ
+                    window.location.href = '/admin';
+                }else{
+                    // 失敗したらエラーを表示
+                    errorMsg.textContent = result.message;
+                    errorMsg.style.display = 'block';
+                }
+
+            }catch(err){
+                console.error(err);
+                errorMsg.textContent = '通信エラーが発生しました';
+                errorMsg.style.display = 'block';
+            }
+        });
+
+    </script>
 </body>
 </html>

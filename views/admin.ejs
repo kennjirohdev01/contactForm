@@ -4,14 +4,53 @@
     <meta charset="UTF-8">
     <title>管理者画面</title>
     <link rel="stylesheet" href="./css/adminstyle.css">
+    <style>
+        /* 管理者追加フォーム用の簡易スタイル */
+        .admin-add-section {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f0f8ff;
+            border: 1px solid #b0c4de;
+            border-radius: 5px;
+        }
+        .admin-add-section h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .admin-add-section input {
+            padding: 5px;
+            margin-right: 5px;
+        }
+        .admin-add-section button {
+            padding: 6px 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .admin-add-section button:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
     <h1>管理者画面 問い合わせ内容一覧</h1>
     <p>
-    <a href="/">フォームへ戻る</a>
-    <span style="margin: 0 10px;">|</span>
-    <a href="/logout" style="color: red;">ログアウト</a>
+        <a href="/">フォームへ戻る</a>
+        <span style="margin: 0 10px;">|</span>
+        <a href="/logout" style="color: red;">ログアウト</a>
     </p>
+
+    <div class="admin-add-section">
+        <h3>管理者ユーザー追加</h3>
+        <div>
+            <input type="email" id="newAdminEmail" placeholder="メールアドレス" required>
+            <input type="password" id="newAdminPass" placeholder="パスワード" required>
+            <button id="addAdminBtn">追加</button>
+        </div>
+    </div>
 
     <table>
         <thead>
@@ -27,21 +66,118 @@
                 <th>お問い合わせ内容</th>
             </tr>
         </thead>
-        <tbody>
-            <% submissions.forEach((submission) => { %>
-                <tr>
-                    <td><%= submission.id %></td>
-                    <td><%= submission.prefecture %></td>
-                    <td><%= submission.city %></td>
-                    <td><%= submission.address_line1 %></td>
-                    <td><%= formatDate(submission.birthday) %></td>
-                    <td><%= submission.name %></td>
-                    <td><%= submission.email_address %></td>
-                    <td><%= formatDate(submission.created_at,true) %></td>
-                    <td><%= submission.message %></td>
-                </tr>
-            <% }); %>
+        <tbody id="contactList">
         </tbody>
     </table>
+
+    <script>
+        // --- 1. 日付フォーマット関数 ---
+        // サーバー側の utils/dataFormater.js と同じロジックをこっちで再現
+        function formatDate(dateString, includeTime = false) {
+            if (!dateString) return '';
+            const d = new Date(dateString);
+            if (isNaN(d.getTime())) return 'invalid date';
+
+            const yyyy = d.getFullYear();
+            const mm = ('00' + (d.getMonth() + 1)).slice(-2);
+            const dd = ('00' + d.getDate()).slice(-2);
+            let str = `${yyyy}/${mm}/${dd}`;
+
+            if (includeTime) {
+                const hh = ('00' + d.getHours()).slice(-2);
+                const min = ('00' + d.getMinutes()).slice(-2);
+                const ss = ('00' + d.getSeconds()).slice(-2);
+                str += ` ${hh}:${min}:${ss}`;
+            }
+            return str;
+        }
+
+        // --- 2. メイン処理 (ページ読み込み完了時に実行) ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            const tableBody = document.getElementById('contactList');
+            const addAdminBtn = document.getElementById('addAdminBtn');
+
+            // --- A. 問い合わせ一覧の取得と表示 ---
+            try {
+                // APIを呼び出す (GETリクエスト)
+                const response = await fetch('/api/contacts');
+                
+                // もしセッション切れなどで401が返ってきたらログイン画面へ
+                if (response.status === 401) {
+                    window.location.href = '/login';
+                    return;
+                }
+
+                // JSONデータを取得
+                const contacts = await response.json();
+
+                // 取得した配列データをループして、HTML(tr要素)を作成
+                contacts.forEach(contact => {
+                    // 行(tr)を作成
+                    const tr = document.createElement('tr');
+                    
+                    // 中身のHTMLを作成
+                    tr.innerHTML = `
+                        <td>${contact.id}</td>
+                        <td>${contact.prefecture}</td>
+                        <td>${contact.city}</td>
+                        <td>${contact.address_line1}</td>
+                        <td>${formatDate(contact.birthday)}</td>
+                        <td>${contact.name}</td>
+                        <td>${contact.email_address}</td>
+                        <td>${formatDate(contact.created_at, true)}</td>
+                        <td>${contact.message}</td>
+                    `;
+                    
+                    // テーブルに追加
+                    tableBody.appendChild(tr);
+                });
+
+            } catch (error) {
+                console.error('データ取得エラー:', error);
+                tableBody.innerHTML = '<tr><td colspan="9" style="color:red;">データの読み込みに失敗しました</td></tr>';
+            }
+
+            // --- B. 管理者追加ボタンの処理 ---
+            addAdminBtn.addEventListener('click', async () => {
+                const emailInput = document.getElementById('newAdminEmail');
+                const passInput = document.getElementById('newAdminPass');
+                
+                const email = emailInput.value;
+                const password = passInput.value;
+
+                // 簡易バリデーション
+                if(!email || !password){
+                    alert('メールアドレスとパスワードを入力してください');
+                    return;
+                }
+
+                try {
+                    // APIへ送信 (POSTリクエスト)
+                    const res = await fetch('/api/admin/users', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ email, password })
+                    });
+                    
+                    const result = await res.json();
+                    
+                    if(result.success) {
+                        alert('管理者を登録しました！');
+                        // 入力欄をクリア
+                        emailInput.value = '';
+                        passInput.value = '';
+                    } else {
+                        // エラーメッセージを表示 (例: 重複など)
+                        alert('エラー: ' + result.message);
+                    }
+
+                } catch(err) {
+                    console.error(err);
+                    alert('通信エラーが発生しました');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
